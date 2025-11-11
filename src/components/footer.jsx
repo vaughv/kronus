@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, ArrowUp } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, ArrowUp, Youtube } from "lucide-react";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -7,13 +7,13 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-black text-gray-300 pt-16 pb-8">
+    <footer className="relative bg-slate-200 text-gray-300 pt-16 pb-8">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         
         {/* Company Info */}
         <div>
-          <h2 className="text-2xl font-extrabold text-lime-400 tracking-wider mb-3">
+          <h2 className="text-2xl font-extrabold text-black tracking-wider mb-3">
             KRONUS INFRATECH
           </h2>
           <p className="text-sm leading-relaxed text-gray-400 mb-4">
@@ -21,22 +21,25 @@ const Footer = () => {
             Your dream home, delivered with precision and passion.
           </p>
           <div className="flex space-x-4 mt-4">
-            <a href="#" className="text-gray-400 hover:text-lime-400 transition">
+            <a href="#" className="text-black hover:text-lime-400 transition">
               <Facebook size={20} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-lime-400 transition">
+            <a href="#" className="text-black hover:text-lime-400 transition">
               <Instagram size={20} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-lime-400 transition">
+            <a href="#" className="text-black hover:text-lime-400 transition">
               <Linkedin size={20} />
+            </a>
+            <a href="#" className="text-black hover:text-lime-400 transition">
+              <Youtube size={20} />
             </a>
           </div>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
-          <ul className="space-y-3 text-sm">
+          <h3 className="text-lg font-semibold text-black mb-4">Quick Links</h3>
+          <ul className="space-y-3 text-black text-sm">
             <li><a href="#home" className="hover:text-lime-400 transition">Home</a></li>
             <li><a href="#projects" className="hover:text-lime-400 transition">Projects</a></li>
             <li><a href="#about" className="hover:text-lime-400 transition">About Us</a></li>
@@ -47,18 +50,18 @@ const Footer = () => {
 
         {/* Contact Info */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
-          <ul className="space-y-3 text-sm">
+          <h3 className="text-lg font-semibold text-black mb-4">Contact Us</h3>
+          <ul className="space-y-3 text-sm text-black">
             <li className="flex items-start space-x-3">
-              <MapPin className="w-5 h-5 text-lime-400 shrink-0 mt-1" />
+              <MapPin className="w-5 h-5 text-black shrink-0 mt-1" />
               <span>KRONUS Infratech Pvt. Ltd.<br />Banashankari Stage 2, Bengaluru, India</span>
             </li>
             <li className="flex items-center space-x-3">
-              <Phone className="w-5 h-5 text-lime-400" />
+              <Phone className="w-5 h-5 text-black" />
               <a href="tel:+919319787895" className="hover:text-lime-400 transition">+91 93197 87895</a>
             </li>
             <li className="flex items-center space-x-3">
-              <Mail className="w-5 h-5 text-lime-400" />
+              <Mail className="w-5 h-5 text-black" />
               <a href="mailto:info@kronusinfratech.com" className="hover:text-lime-400 transition">
                 info@kronusinfratech.com
               </a>
@@ -68,8 +71,8 @@ const Footer = () => {
 
         {/* Newsletter / Call to Action */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Stay Updated</h3>
-          <p className="text-sm text-gray-400 mb-4">
+          <h3 className="text-lg font-semibold text-black mb-4">Stay Updated</h3>
+          <p className="text-sm text-black mb-4">
             Subscribe to get updates on our latest projects and offers.
           </p>
           <form className="flex items-center">
@@ -80,7 +83,7 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-lime-500 text-black font-semibold rounded-r-full hover:bg-lime-400 transition"
+              className="px-4 py-2 bg-amber-200 text-black font-semibold rounded-r-full hover:bg-lime-400 transition"
             >
               Subscribe
             </button>
@@ -93,8 +96,8 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
-        <p>© {new Date().getFullYear()} <span className="text-lime-400 font-semibold">Kronus Infratech</span>. All rights reserved.</p>
-        <p className="mt-2 sm:mt-0">Designed & Developed by <span className="text-lime-400 font-semibold">Vaibhav Bhardwaj</span></p>
+        <p>© {new Date().getFullYear()} <span className="text-red-500 font-semibold">Kronus Infratech</span>. All rights reserved.</p>
+        <p className="mt-2 sm:mt-0">Designed & Developed by <span className="text-red-500 font-semibold"><a href="https://knomodevelopers.com/">Knomo Developers</a></span></p>
       </div>
 
       {/* Scroll to Top */}

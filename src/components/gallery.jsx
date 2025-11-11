@@ -1,53 +1,128 @@
-
+import React from "react";
 import assets from "../assets";
 
-// Build a simple images array for the gallery. We keep this local so the gallery
-// doesn't assume `assets` is an array. If you later add more images to
-// src/assets/index.js, update this list to include them.
-const images = [
-  { id: 1, url: assets.reward, alt: "KRONUS Award - MSME Most Promising" },
-  { id: 2, url: "https://placehold.co/800x800/0f172a/94a3b8?text=Project+1", alt: "Project 1 - Exterior" },
-  { id: 3, url: "https://placehold.co/800x800/0b1220/94a3b8?text=Project+2", alt: "Project 2 - Living Room" },
-  { id: 4, url: "https://placehold.co/800x800/081024/94a3b8?text=Project+3", alt: "Project 3 - Lobby" },
-  { id: 5, url: "https://placehold.co/800x800/001219/94a3b8?text=Project+4", alt: "Project 4 - Amenities" },
-  { id: 6, url: "https://placehold.co/800x800/021124/94a3b8?text=Project+5", alt: "Project 5 - Landscape" },
+// Gallery data
+const galleryMedia = [
+  { type: "image", src: assets.a , aspectRatio: "h-auto" },
+  { type: "video", id: "lb246_NEfks", aspectRatio: "h-[30rem]" },
+  { type: "image", src: assets.b, aspectRatio: "h-auto" },
+  { type: "image", src: assets.c, aspectRatio: "h-auto" },
+  { type: "video", id: "F_ED_Shqd44", aspectRatio: "h-[24rem]" },
+  { type: "image", src: assets.d, aspectRatio: "h-auto" },
+  { type: "image", src: assets.e, aspectRatio: "h-auto" },
+  { type: "image", src: assets.f, aspectRatio: "h-auto" },
+  { type: "video", id: "Frnuz0Bndx4", aspectRatio: "h-[26rem]" },
+  { type: "image", src: assets.g, aspectRatio: "h-52" },
+  { type: "video", id: "aKf2N4prUng", aspectRatio: "h-[28rem]" },
 ];
 
-const GallerySection = () => {
-    if (!images || images.length === 0) return null;
-
-    return (
-        <section id="gallery" className="py-16 md:py-24 bg-gray-100">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-4xl font-extrabold text-gray-900 mb-4 text-center">
-                    Project Gallery
-                </h2>
-                <p className="text-xl text-gray-600 mb-12 text-center max-w-2xl mx-auto">
-                    A glimpse into the stunning design and world-class amenities of our recent developments.
-                </p>
-
-                {/* Responsive gallery grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {images.map((image) => (
-                        <div key={image.id} className="relative overflow-hidden rounded-xl shadow-lg group cursor-pointer">
-                            <div className="w-full pb-[75%] bg-gray-200 relative">
-                                <img
-                                    src={image.url}
-                                    alt={image.alt}
-                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/800x600/0f172a/94a3b8?text=Gallery+Image"; }}
-                                />
-                            </div>
-
-                            <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm rounded-md p-3 opacity-90 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                <span className="text-white font-semibold text-sm">{image.alt}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+// Split into 3 columns
+const splitIntoColumns = (arr, numCols) => {
+  const cols = Array.from({ length: numCols }, () => []);
+  arr.forEach((item, i) => {
+    cols[i % numCols].push(item);
+  });
+  return cols;
 };
 
-export default GallerySection;
+const SectionTitle = ({ id, children }) => (
+  <h2 id={id} className="text-4xl font-extrabold text-stone-800 mb-12 border-b-4 border-amber-600 inline-block pb-1">
+    {children}
+  </h2>
+);
+
+// Single Column
+const GalleryColumn = ({ items, speedClass, delayClass }) => {
+  const allItems = [...items, ...items];
+
+  return (
+    <div className={`flex flex-col min-w-[260px] space-y-6 ${speedClass} ${delayClass}`}>
+      {allItems.map((item, index) => (
+        <div
+          key={index}
+          className={`w-full rounded-xl overflow-hidden shadow-xl shrink-0 transition duration-200 hover:shadow-2xl ${item.aspectRatio}`}
+        >
+          {item.type === "image" ? (
+            <img
+              src={item.src}
+              className="w-full h-full object-cover"
+              onError={(e) => (e.target.src = "https://placehold.co/400x400/FACC15/78350F?text=Media")}
+            />
+          ) : (
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${item.id}?controls=0&mute=1&autoplay=1&loop=1&playlist=${item.id}`}
+              frameBorder="0"
+              allow="autoplay; encrypted-media; gyroscope;"
+              loading="lazy"
+              className="w-full h-full object-cover"
+            ></iframe>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ContinuousScrollGallery = () => {
+  const [col1, col2, col3] = splitIntoColumns(galleryMedia, 3);
+
+  const styles = `
+  @keyframes scroll-up {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+  }
+  @keyframes scroll-down {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0); }
+  }
+
+  .animate-scroll-up-fast {
+    animation: scroll-up 10s linear infinite;
+  }
+  .animate-scroll-up-medium {
+    animation: scroll-up 15s linear infinite;
+  }
+  .animate-scroll-down {
+    animation: scroll-down 10s linear infinite;
+  }
+
+  .delay-5s { animation-delay: 2s; }
+`;
+
+
+  return (
+    <>
+      <style>{styles}</style>
+
+      <div className="w-full mx-auto text-center bg-white">
+        <SectionTitle id="gallery">Construction & Design Gallery (Reel Style)</SectionTitle>
+
+        <p className="text-stone-600 mb-12 text-lg max-w-3xl mx-auto">
+          Explore our latest work — a continuous stream of images & reel-style videos.
+        </p>
+
+        <div className="relative h-[150vh] overflow-hidden rounded-2xl shadow-2xl bg-white">
+          <div className="flex justify-evenly h-full w-full p-4 space-x-6">
+
+            {/* LEFT COLUMN — UP FAST */}
+            <GalleryColumn items={col1} speedClass="animate-scroll-up-fast" delayClass="" />
+
+            {/* MIDDLE COLUMN — DOWN */}
+            <GalleryColumn items={col2} speedClass="animate-scroll-down" delayClass="delay-2s" />
+
+            {/* RIGHT COLUMN — UP MEDIUM */}
+            <GalleryColumn items={col3} speedClass="animate-scroll-up-medium" delayClass="" />
+          </div>
+
+          <div className="absolute inset-x-0 top-0 h-20 bg-linear-to-b from-white to-transparent pointer-events-none"></div>
+
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-white to-transparent pointer-events-none"></div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ContinuousScrollGallery;

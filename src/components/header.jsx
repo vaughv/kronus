@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Menu, X, Phone, Mail, Instagram, Youtube, Facebook } from 'lucide-react';
 
 const navItems = [
   { name: 'HOME', to: '/' },
@@ -12,17 +12,17 @@ const navItems = [
 ];
 
 // small top pills (styled to match Figma)
-const TopPills = () => (
-  <div className="absolute inset-x-0 top-3 pointer-events-none z-40 bg-white/40 backdrop-blur-sm py-1  ">
+const TopPills = ({ scrolled }) => (
+  <div className={`absolute py-4 inset-x-0 top-0 pointer-events-none  transition-all duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}>
     <div className="max-w-7xl mx-auto px-4 flex justify-between items-center pointer-events-auto">
-      <div className=" text-black text-xs px-3 py-1 rounded-full shadow-sm border border-gray-200 hover:bg-white ">
-        <span className="font-medium">Call Us:</span>
-        <span className="ml-2">+91 9324XXXXXX</span>
-      </div>
-      <div className=" text-black text-xs px-3 py-1 rounded-full shadow-sm border border-gray-200 hover:bg-white ">
-        <span className="font-medium">Email us:</span>
-        <span className="ml-2">example@gmail.com</span>
-      </div>
+      <a href="tel:+919324XXXXXX" className="text-black text-xs px-3 py-1 rounded-full shadow-sm border bg-white/80 border-gray-200 hover:bg-white transition-colors flex items-center gap-2">
+        <Phone size={14} />
+        <span className="font-medium">+91 9324XXXXXX</span>
+      </a>
+      <a href="mailto:example@gmail.com" className="text-black text-xs px-3 py-1 rounded-full shadow-sm border bg-white/80 border-gray-200 hover:bg-white transition-colors flex items-center gap-2">
+        <Mail size={14} />
+        <span className="font-medium">example@gmail.com</span>
+      </a>
     </div>
   </div>
 );
@@ -40,26 +40,18 @@ const HeaderNav = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // For mobile menu position
-  const [setMenuPos] = useState({ top: 0, left: 0, width: 0 });
-
-  const handleMenuOpen = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMenuPos({ top: rect.bottom + window.scrollY, left: rect.left, width: rect.width });
-    setOpen(true);
+  const handleMenuOpen = () => {
+    setOpen(!open);
   };
 
   return (
     <div className={`relative z-50`}>
-      <TopPills />
+      <TopPills scrolled={scrolled} />
 
-      <div className={`max-w-7xl mx-auto px-4 py-15 flex items-center justify-between`}>
-        {/* Logo - oval style like Figma */}
-        <div className={`flex items-center justify-between w-full py-4 rounded-3xl bg-clip-padding backdrop-filter ${scrolled ? 'fixed top-0 left-0 right-0 bg-white/80 shadow-lg transition-all duration-300' : 'bg-white-700 bg-opacity-90'} `} style={scrolled ? {zIndex: 1000} : {}}>
-          <Link to="/" className="flex items-center gap-3 z-50">
-            <div className=" rounded-full px-auto py-auto shadow-sm flex items-center">
-              <img src='logonobg1.png' alt='Kronus Logo' className='w-50 h-auto'/>
-            </div>
+      <div className={`w-full px-5 py-15 flex items-center justify-between ${scrolled ? 'bg-slate-200 shadow-lg h-8' : ''} transition-all duration-300`}>
+        <div className="flex items-center justify-between w-full">
+          <Link to="/" className="flex items-center">
+            <img src='logonobg1.png' alt='Kronus Logo' className='w-60 h-auto '/>
           </Link>
 
           {/* Centered nav links for large screens */}
@@ -69,7 +61,7 @@ const HeaderNav = () => {
                 <Link
                   key={n.name}
                   to={n.to}
-                  className={`text-white/90 hover:text-gray-400 text-sm font-semibold uppercase tracking-widest hover:backdrop-blur-2xl transition px-3 py-2 rounded-md ${location.pathname === n.to ? 'border-b-2 border-white' : ''}`}
+                  className={`text-black backdrop-blur-lg hover:text-gray-400 text-sm font-semibold uppercase tracking-widest hover:backdrop-blur-2xl transition px-3 py-2 rounded-md ${location.pathname === n.to ? 'border-b-2 border-white' : ''}`}
                 >
                   {n.name}
                 </Link>
@@ -77,78 +69,97 @@ const HeaderNav = () => {
                 <a
                   key={n.name}
                   href={n.to}
-                  className="text-white/90 hover:text-gray-400 text-sm font-semibold uppercase tracking-widest hover:backdrop-blur-2xl transition px-3 py-2 rounded-md"
+                  className="text-black backdrop-blur-lg hover:text-gray-400 text-sm font-semibold uppercase tracking-widest hover:backdrop-blur-2xl transition px-3 py-2 rounded-md"
                 >
                   {n.name}
                 </a>
               )
             ))}
           </div>
+          
 
           {/* Right side - contact CTA / mobile hamburger */}
           <div className="flex items-center gap-4">
-            <a
-              href="#contact"
-              className="hidden md:inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-red-500 transition"
-            >
-              Contact Us
+            <a>
+              <button className="bg-amber-200 hover:bg-amber-600 text-black text-sm font-semibold uppercase tracking-widest px-4 py-2 rounded-md transition hidden lg:block ">
+                contact us
+              </button>
             </a>
-
             {/* Mobile hamburger - circular pill */}
             <button
               onClick={handleMenuOpen}
-              className="lg:hidden bg-white/90 p-3 rounded-full shadow-md border border-gray-200"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               aria-expanded={open}
-              aria-label="Open menu"
-            ><img src='https://icon-library.com/images/free-hamburger-menu-icon/free-hamburger-menu-icon-6.jpg' alt='Menu Icon' className='h-6 w-auto'/>
+              aria-label="Toggle menu"
+            >
+              {open ? <X className="h-6 w-6 text-black" /> : <Menu className="h-6 w-6 text-black" />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile menu panel */}
-      {open && (
+      <div
+        className={`lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity ${
+          open ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setOpen(false)}
+      >
         <div
-          className="lg:hidden fixed bg-white/95 backdrop-blur-md z-1000 rounded-xl shadow-2xl border border-gray-200"
-          style={{ top: '80px', left: '50%', transform: 'translateX(-50%)', width: '90%', maxWidth: '400px' }}
+          className={`fixed right-0 top-0 h-full w-[300px] bg-white shadow-2xl transition-transform duration-300 transform ${
+            open ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          onClick={e => e.stopPropagation()}
         >
-          <div className="px-6 py-6 flex flex-col items-center space-y-4">
-            {navItems.map((n) => (
-              n.to.startsWith('/') ? (
-                <Link
-                  key={n.name}
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className="text-black text-lg font-semibold uppercase hover:text-red-600 transition-colors"
-                >
-                  {n.name}
-                </Link>
-              ) : (
-                <a
-                  key={n.name}
-                  href={n.to}
-                  onClick={() => setOpen(false)}
-                  className="text-black text-lg font-semibold uppercase hover:text-red-600 transition-colors"
-                >
-                  {n.name}
-                </a>
-              )
-            ))}
-            <div className="pt-2 border-t border-black/10 w-full flex flex-col items-center">
-              <a href="tel:+919224XXXXXX" className="flex items-center gap-2 text-black/90">
-                <Phone size={16} /> <span>+91-9224XXXXXX</span>
-              </a>
-              <a href="mailto:devops@gmail.com" className="flex items-center gap-2 mt-2 text-black/90">
-                <Mail size={16} /> <span>devops@gmail.com</span>
-              </a>
+          <div className="p-6 flex flex-col h-full">
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="h-6 w-6 text-black" />
+              </button>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              className="mt-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-full"
-            >Close</button>
+            <nav className="flex-1">
+              <div className="space-y-3">
+                {navItems.map((n) => (
+                  n.to.startsWith('/') ? (
+                    <Link
+                      key={n.name}
+                      to={n.to}
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      {n.name}
+                    </Link>
+                  ) : (
+                    <a
+                      key={n.name}
+                      href={n.to}
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      {n.name}
+                    </a>
+                  )
+                ))}
+              </div>
+            </nav>
+            <div className="pt-6 border-t border-gray-200">
+              <div className="space-y-3">
+                <a href="tel:+919224XXXXXX" className="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                  <Phone className="h-5 w-5" />
+                  <span>+91-9224XXXXXX</span>
+                </a>
+                <a href="mailto:devops@gmail.com" className="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                  <Mail className="h-5 w-5" />
+                  <span>devops@gmail.com</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

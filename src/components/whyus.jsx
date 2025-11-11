@@ -138,7 +138,6 @@ const WhyUs = () => {
               strategist.
             </p>
             <button
-              onClick={() => console.log("CTA Clicked: Schedule Consultation")}
               className="flex items-center justify-center mx-auto bg-orange-600 text-white font-bold py-4 px-10 rounded-full shadow-lg transition-all duration-300 hover:bg-orange-700 hover:scale-[1.03] transform text-lg uppercase tracking-wider"
             >
               <Briefcase className="w-5 h-5 mr-3" />

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MapPin, Maximize2, Bed, ChevronLeft, ChevronRight } from "lucide-react";
 
 
- 
-
 const mockProjects = [
   {
     id: 1,
@@ -64,7 +62,7 @@ const mockProjects = [
     tag: "COMMERCIAL",
     title: "KRONUS Galleria",
     location: "CENTRAL BUSINESS DIST.",
-    units: "Retail & Office Spaces",
+    units: "1900 - 2500 SQ FT",
     bedrooms: "N/A",
     imageUrl: "https://placehold.co/600x400/1e293b/a7f3d0?text=Galleria+Commercial",
   },
@@ -130,7 +128,7 @@ const ProjectsSlider = () => {
         <div className="p-6">
           <h3 className="text-xl font-bold text-gray-900 mb-1">{project.title}</h3>
           <div className="flex items-center text-gray-600 text-sm mb-4">
-            <MapPin size={14} className="mr-1 text-lime-600" />
+            <MapPin size={14} className="mr-1 text-amber-200" />
             <span>{project.location}</span>
           </div>
 
@@ -140,7 +138,7 @@ const ProjectsSlider = () => {
                 UNIT SIZE
               </span>
               <div className="flex items-center text-gray-800 font-bold">
-                <Maximize2 size={16} className="mr-1 text-lime-500" />
+                <Maximize2 size={16} className="mr-1 text-amber-200" />
                 {project.units}
               </div>
             </div>
@@ -150,17 +148,17 @@ const ProjectsSlider = () => {
                 BEDROOMS
               </span>
               <div className="flex items-center text-gray-800 font-bold">
-                <Bed size={16} className="mr-1 text-lime-500" />
+                <Bed size={16} className="mr-1 text-amber-200" />
                 {project.bedrooms}
               </div>
             </div>
           </div>
 
           <div className="mt-6 flex justify-between gap-4">
-            <button className="w-1/2 py-2 text-sm font-semibold text-lime-600 border border-lime-600 rounded-lg hover:bg-lime-50 transition">
+            <button className="w-1/2 py-2 text-sm font-semibold text-amber-500 border border-lime-600 rounded-lg hover:bg-lime-50 transition">
               ENQUIRE
             </button>
-            <button className="w-1/2 py-2 text-sm font-semibold text-white bg-lime-600 rounded-lg hover:bg-lime-700 transition">
+            <button className="w-1/2 py-2 text-sm font-semibold text-slate-900 bg-amber-200 rounded-lg hover:bg-lime-700 transition">
               KNOW MORE
             </button>
           </div>
@@ -170,11 +168,9 @@ const ProjectsSlider = () => {
   );
 
   return (
-    <section id="projects" className="py-16 md:py-24 bg-black"
-       
-    >
+    <section id="projects" className="py-16 md:py-24 bg-white" >
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-5xl font-extrabold text-white mb-12 text-center">
+        <h2 className="text-5xl font-extrabold text-gray-300 mb-12 text-center">
           OUR PROJECTS
         </h2>
 
@@ -209,13 +205,11 @@ const ProjectsSlider = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="py-3 px-8 text-lg font-semibold text-white bg-lime-600 rounded-lg shadow-xl hover:bg-lime-700 transition transform hover:scale-[1.03]">
+          <button className="py-3 px-8 text-lg font-semibold text-slate-800 bg-amber-200 rounded-lg shadow-xl hover:bg-lime-700 transition transform hover:scale-[1.03]">
             View All Projects
           </button>
         </div>
       </div>
-      <div className="absolute top-0 left-0 w-full h-45 bg-linear-to-t from-black to-transparent"></div>
-
     </section>
   );
 };

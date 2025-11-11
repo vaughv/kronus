@@ -1,343 +1,108 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// --- Mock Testimonial Data (Total 9) ---
 const testimonials = [
-  {
-    id: 1,
-    quote: "In a challenging market, my agent was relentless. They gave me the edge I needed to win the bid. Sharp and available.",
-    client: "Kelly B.",
-    location: "Young Professional Buyer, Downtown Loft",
-    rating: 5,
-    initial: "KB",
-  },
-  {
-    id: 2,
-    quote: "Eleanor is more than an agent; she's a true neighborhood advocate. Her insight was instrumental in finding our dream home and securing a great deal.",
-    client: "The Johnson Family",
-    location: "First-time Homebuyers, Eastside, CA",
-    rating: 5,
-    initial: "JF",
-  },
-  {
-    id: 3,
-    quote: "The strategic pricing and marketing plan developed resulted in multiple competing offers in the first 48 hours. The entire process was handled with professionalism and speed.",
-    client: "Mark L.",
-    location: "Investor, Luxury Properties",
-    rating: 4,
-    initial: "ML",
-  },
-  {
-    id: 4,
-    quote: "Transparent, ethical, and always available. Eleanor made what could have been a stressful cross-country relocation feel effortless. We found the perfect place for our family.",
-    client: "Sarah & David K.",
-    location: "Relocation Clients, The Suburbs",
-    rating: 5,
-    initial: "SD",
-  },
-  {
-    id: 5,
-    quote: "Excellent service and deep knowledge of the local market. Closed the deal faster than expected and minimized all the stress.",
-    client: "Aisha T.",
-    location: "Corporate Relocation, North Hills",
-    rating: 5,
-    initial: "AT",
-  },
-  {
-    id: 6,
-    quote: "Responsive, professional, and trustworthy. They guided us through every step of our investment purchase. Highly recommended to all serious buyers.",
-    client: "Priya V.",
-    location: "Local Investor, Rental Properties",
-    rating: 5,
-    initial: "PV",
-  },
-  {
-    id: 7,
-    quote: "Highly recommend! The level of dedication to finding the perfect home was unmatched. They truly put our family first.",
-    client: "Ben C.",
-    location: "Family Home Buyer, West County",
-    rating: 5,
-    initial: "BC",
-  },
-  {
-    id: 8,
-    quote: "Strategic negotiation skills secured us a fantastic price in a competitive environment. Couldn't have done it without them.",
-    client: "Sofia R.",
-    location: "High-End Seller, Beacon Heights",
-    rating: 4,
-    initial: "SR",
-  },
-  {
-    id: 9,
-    quote: "A true master of their craft. From initial consult to closing, everything was seamless and completely stress-free.",
-    client: "David W.",
-    location: "Retirement Planner, Condo Sale",
-    rating: 5,
-    initial: "DW",
-  },
+  { id: 1, name: 'Aarav Sharma', role: 'Designer', image: 'https://randomuser.me/api/portraits/men/32.jpg', review: 'Absolutely loved the service! Professional and smooth experience throughout.' },
+  { id: 2, name: 'Priya Mehta', role: 'Entrepreneur', image: 'https://randomuser.me/api/portraits/women/44.jpg', review: 'Amazing attention to detail. Highly recommended for premium projects!' },
+  { id: 3, name: 'Rahul Verma', role: 'Engineer', image: 'https://randomuser.me/api/portraits/men/45.jpg', review: 'Exceptional quality and great communication from start to finish.' },
+  { id: 4, name: 'Isha Kapoor', role: 'Marketing Lead', image: 'https://randomuser.me/api/portraits/women/68.jpg', review: 'They really understand client needs and go the extra mile every time.' },
+  { id: 5, name: 'Vikram Saini', role: 'Freelancer', image: 'https://randomuser.me/api/portraits/men/28.jpg', review: 'Loved working with the team. Smooth process and beautiful output!' },
+  { id: 6, name: 'Ananya Singh', role: 'Developer', image: 'https://randomuser.me/api/portraits/women/12.jpg', review: 'Delivered way beyond my expectations. Highly reliable and creative!' },
+  { id: 7, name: 'Rohit Malhotra', role: 'Photographer', image: 'https://randomuser.me/api/portraits/men/67.jpg', review: 'Brilliant designs, perfect timing, and great overall coordination!' },
+  { id: 8, name: 'Simran Kaur', role: 'Artist', image: 'https://randomuser.me/api/portraits/women/26.jpg', review: 'I felt heard and understood throughout the entire process. Loved it!' },
+  { id: 9, name: 'Aditya Rao', role: 'Consultant', image: 'https://randomuser.me/api/portraits/men/70.jpg', review: 'Best experience ever. The team was super responsive and efficient.' },
+  { id: 10, name: 'Neha Bansal', role: 'Content Creator', image: 'https://randomuser.me/api/portraits/women/71.jpg', review: 'Such elegant work! It’s rare to find this level of dedication these days.' },
 ];
 
-const totalTestimonials = testimonials.length;
-const AUTOPLAY_INTERVAL = 3000; // 3 seconds
-const CARDS_PER_VIEW = 3; // How many are visible on desktop/large screens
-
-// Component to render star ratings
-const StarRating = React.memo(({ rating }) => (
-  <div className="flex text-amber-500">
-    {[...Array(5)].map((_, i) => (
-      <Star 
-        key={i} 
-        className={`w-5 h-5 fill-current transition-colors duration-200 ${
-          i < rating ? 'opacity-100' : 'opacity-30'
-        }`} 
-      />
-    ))}
-  </div>
-));
-
-// Component for a single testimonial card
-// We are now passing card classes instead of inline styles
-const TestimonialCard = React.memo(({ testimonial, cardClasses }) => (
-  <div 
-    className={`shrink-0 p-4 transition-transform duration-700 ease-in-out ${cardClasses}`}
+const TestimonialCard = ({ testimonial }) => (
+  <motion.div
+    className="bg-white rounded-2xl shadow-lg p-6 text-center flex flex-col items-center gap-4 border border-gray-100 hover:scale-105 transition-transform duration-300"
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -50 }}
+    transition={{ duration: 0.6 }}
   >
-        <div className="bg-white p-8 md:p-10 rounded-xl shadow-xl h-full flex flex-col justify-between">
-            {/* Quote and Icon */}
-            <p className="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed min-h-[140px] mb-4 relative">
-                <span className="absolute -top-6 -left-6 text-7xl font-serif text-gray-200 opacity-70 leading-none z-0">
-                    &ldquo;
-                </span>
-                {testimonial.quote}
-            </p>
-            
-            {/* Client Info */}
-            <div className="mt-4 pt-4 flex flex-col items-start border-t border-gray-100">
-                <StarRating rating={testimonial.rating} />
-                
-                <div className="flex items-center space-x-3 mt-3">
-                    {/* Client Avatar Initial Badge */}
-                    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                        {testimonial.initial}
-                    </div>
-                    
-                    {/* Client Info */}
-                    <div>
-                        <p className="text-md font-semibold text-gray-900 leading-tight">
-                            {testimonial.client}
-                        </p>
-                        <p className="text-sm text-gray-500 leading-tight">
-                            {testimonial.location}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover" />
+    <p className="text-gray-600 italic">“{testimonial.review}”</p>
+
+    <div className="flex gap-1 text-yellow-400">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} size={18} fill="currentColor" />
+      ))}
     </div>
-));
 
+    <h3 className="font-semibold text-gray-900">{testimonial.name}</h3>
+    <p className="text-sm text-gray-500">{testimonial.role}</p>
+  </motion.div>
+);
 
-const TestimonialsSlider = () => {
-  // currentIndex tracks the index of the leftmost visible card (0 to 8)
-  const [currentIndex, setCurrentIndex] = useState(0); 
-  const [dragStartX, setDragStartX] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [userInteracting, setUserInteracting] = useState(false);
-  const sliderRef = useRef(null);
-  const timeoutRef = useRef(null);
-  
-  // Calculate how many dot indicators we need (total testimonials)
-  const totalDots = totalTestimonials;
+const Testimonials = () => {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-  // Calculates the index after moving one step back (wraps around)
-  const goToPrevious = useCallback(() => {
-    setCurrentIndex(prevIndex => 
-        prevIndex === 0 ? totalTestimonials - 1 : prevIndex - 1
-    );
-  }, []);
-
-  // Calculates the index after moving one step forward (wraps around)
-  const goToNext = useCallback(() => {
-    // Seamless looping
-    setCurrentIndex(prevIndex => (prevIndex + 1) % totalTestimonials);
-  }, []);
-  
-  // Resets the autoplay timer
-  const resetTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  // --- Autoplay Effect ---
   useEffect(() => {
-    if (userInteracting) return;
-    
-    resetTimeout();
-    timeoutRef.current = setTimeout(() => {
-      goToNext();
-    }, AUTOPLAY_INTERVAL);
+    if (paused) return;
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [index, paused]);
 
-    return () => resetTimeout();
-  }, [currentIndex, userInteracting, goToNext]); 
-
-  // --- Interaction Handlers (Swipe/Drag) ---
-
-  const handleInteractionStart = (e) => {
-    setUserInteracting(true);
-    setIsDragging(true);
-    
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    setDragStartX(clientX);
-    
-    if (sliderRef.current) {
-        sliderRef.current.style.cursor = 'grabbing';
-    }
-    resetTimeout(); // Pause autoplay immediately
+  const nextSlide = () => {
+    setIndex((prevIndex) => (prevIndex + 3) % testimonials.length);
   };
 
-  const handleInteractionEnd = useCallback((e) => {
-    if (!isDragging) {
-        setUserInteracting(false);
-        return;
-    }
-
-    setIsDragging(false);
-
-    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    const dragDistance = dragStartX - clientX;
-    const threshold = 100; // Swipe distance threshold
-
-    if (dragDistance > threshold) {
-      goToNext(); 
-    } else if (dragDistance < -threshold) {
-      goToPrevious(); 
-    }
-
-    if (sliderRef.current) {
-        sliderRef.current.style.cursor = 'grab';
-    }
-
-    // Restart autoplay timer after interaction period
-    setTimeout(() => setUserInteracting(false), AUTOPLAY_INTERVAL);
-  }, [isDragging, dragStartX, goToNext, goToPrevious]);
-
-  // Attach global mouse handlers for drag release outside the card
-  useEffect(() => {
-    const handleMouseUp = (e) => handleInteractionEnd(e);
-    const handleTouchEnd = (e) => handleInteractionEnd(e);
-
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [isDragging, dragStartX, currentIndex, handleInteractionEnd]); 
-  
-  // Utility function for button navigation to pause autoplay temporarily
-  const handleNavigationClick = () => {
-    setUserInteracting(true);
-    resetTimeout();
-    setTimeout(() => setUserInteracting(false), AUTOPLAY_INTERVAL);
+  const prevSlide = () => {
+    setIndex((prevIndex) => (prevIndex - 3 + testimonials.length) % testimonials.length);
   };
 
-  // 1. Calculate the total track width (e.g., 9 cards * 33.33% = 300%)
-  const trackWidth = totalTestimonials * (100 / CARDS_PER_VIEW); 
-
-  // 2. Calculate the total translateX needed for one card shift (e.g., 1 * 33.33% = 33.33%)
-  const translateX = currentIndex * (100 / CARDS_PER_VIEW);
-  
-  // 3. Define the responsive classes for the card width
-  const cardClasses = "w-full md:w-1/2 lg:w-1/3";
-
-  // 4. Total track width and current translation
-  const trackStyle = {
-    width: `${trackWidth}%`,
-    transform: `translateX(-${translateX}%)`
-  };
-
+  const visibleTestimonials = testimonials.slice(index, index + 3);
+  if (visibleTestimonials.length < 3) {
+    visibleTestimonials.push(...testimonials.slice(0, 3 - visibleTestimonials.length));
+  }
 
   return (
-    <section className="font-['Inter'] py-24 bg-gray-100 text-gray-800 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <p className="text-sm font-semibold uppercase tracking-widest text-orange-500 mb-2">
-            Trusted by Clients
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-            What Our Clients Say
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            See the results of our commitment to excellence in every transaction, from first homes to investment properties.
-          </p>
+    <section
+      className="py-16 bg-gray-50 relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-10">What Our Clients Say</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {visibleTestimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* Testimonial Slider Area */}
-        {/* The relative container needs hidden overflow to clip the extra cards */}
-        <div className="relative overflow-hidden">
-          
-          {/* Slider Track Container */}
-          <div
-            ref={sliderRef}
-            className="flex transition-transform duration-700 ease-in-out cursor-grab"
-            style={trackStyle} 
-            
-            // Interaction Events
-            onMouseDown={handleInteractionStart}
-            onTouchStart={handleInteractionStart}
-            onTouchMove={(e) => { if (isDragging) { e.preventDefault(); }}}
-            onMouseLeave={() => { if (!isDragging && userInteracting) setTimeout(() => setUserInteracting(false), AUTOPLAY_INTERVAL); }}
-            onMouseEnter={() => { resetTimeout(); setUserInteracting(true); }}
-          >
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} cardClasses={cardClasses} /> 
+        <div className="flex justify-center items-center gap-6 mt-8">
+          <button onClick={prevSlide} className="p-3 bg-white shadow rounded-full hover:bg-gray-100 transition">
+            <ChevronLeft />
+          </button>
+
+          {/* ✅ FIXED DOT INDICATORS */}
+          <div className="flex gap-2">
+            {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, i) => (
+              <div
+                key={i}
+                className={`w-3 h-3 rounded-full ${
+                  i === Math.floor(index / 3) ? 'bg-blue-500' : 'bg-gray-300'
+                }`}
+              />
             ))}
           </div>
 
-          {/* Slider Navigation Buttons and Dots */}
-          <div className="flex justify-center mt-10 space-x-8">
-            
-            <button
-              onClick={() => { handleNavigationClick(); goToPrevious(); }}
-              aria-label="Previous testimonial"
-              className="p-3 bg-white text-gray-700 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            {/* Dots Indicator: Active dot corresponds to the currently visible leftmost card */}
-            <div className="flex items-center space-x-2">
-              {[...Array(totalDots)].map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    handleNavigationClick();
-                    setCurrentIndex(index);
-                  }}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    index === currentIndex ? 'bg-orange-500 scale-125 w-4' : 'bg-gray-400 hover:bg-gray-500'
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => { handleNavigationClick(); goToNext(); }}
-              aria-label="Next testimonial"
-              className="p-3 bg-white text-gray-700 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
+          <button onClick={nextSlide} className="p-3 bg-white shadow rounded-full hover:bg-gray-100 transition">
+            <ChevronRight />
+          </button>
         </div>
-        
       </div>
     </section>
   );
 };
 
-export default TestimonialsSlider;
+export default Testimonials;

@@ -88,13 +88,12 @@ const JourneyNumbers = () => {
   ];
 
   return (
-    <section className="bg-black py-20 relative overflow-hidden">
+    <section className="bg-white py-20 relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-linear-to-b from-black via-gray-900 to-black opacity-50"></div>
       
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center text-white mb-16">
+        <h2 className="text-4xl font-bold text-center text-amber-300 mb-16">
           OUR JOURNEY IN <span className="text-lime-400">NUMBERS</span>
         </h2>
         
