@@ -40,8 +40,6 @@ const Home = () => {
 
       </section>
 
-      
-
       {/* get a home section */}
       <section className="relative bg-black py-16 z-10">
         <GetAHome />
