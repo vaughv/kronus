@@ -79,13 +79,13 @@ const ContinuousScrollGallery = () => {
   }
 
   .animate-scroll-up-fast {
-    animation: scroll-up 10s linear infinite;
-  }
-  .animate-scroll-up-medium {
     animation: scroll-up 15s linear infinite;
   }
+  .animate-scroll-up-medium {
+    animation: scroll-up 20s linear infinite;
+  }
   .animate-scroll-down {
-    animation: scroll-down 10s linear infinite;
+    animation: scroll-down 15s linear infinite;
   }
 
   .delay-5s { animation-delay: 2s; }
