@@ -4,7 +4,7 @@ import { Menu, X, Phone, Mail, Instagram, Youtube, Facebook } from 'lucide-react
 
 const navItems = [
   { name: 'HOME', to: '/' },
-  { name: 'PROJECTS', to: '#projects' },
+  { name: 'PROJECTS', to: '/projects' },
   { name: 'ABOUT', to: '#about' },
   { name: 'BLOG', to: '/blog' },
   { name: 'GALLERY', to: '#gallery' },

@@ -7,6 +7,7 @@ import Header from './components/header'
 import Home from './components/home'
 import Footer from './components/footer'
 import Blog from './components/blog'
+import Projects from './components/projects'
 
 // Router (note: install react-router-dom if not present)
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -50,6 +51,12 @@ function App() {
           {/* Blog route only (SEO-friendly separate page) */}
           <Route path="/blog" element={<>
             <Blog />
+            <Footer />
+          </>} />
+          
+          {/* Projects route only (SEO-friendly separate page) */}
+          <Route path="/projects" element={<>
+            <Projects />
             <Footer />
           </>} />
 

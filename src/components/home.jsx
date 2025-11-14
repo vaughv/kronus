@@ -1,16 +1,3 @@
-// import removed duplicate React, useState, useEffect
-// import removed duplicate motion, AnimatePresence
-// import removed duplicate Typewriter
-// import removed duplicate ProjectsSlider
-// import removed duplicate assets
-// import removed duplicate JourneyNumbers
-// import removed duplicate GetAHome
-// import removed duplicate WhyUs
-// import removed duplicate Testimonies
-// import removed duplicate Contacts
-// import removed duplicate About
-// import removed duplicate GallerySection
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Typewriter from "typewriter-effect";
