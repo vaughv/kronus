@@ -1,13 +1,14 @@
-import React from "react";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Calendar, Clock, ArrowRight, X } from "lucide-react";
 
-// Mock Blog Posts (Replace with API or CMS later)
 const mockBlogPosts = [
   {
     id: 1,
     title: "The Future of Sustainable Architecture in Urban India",
     summary:
       "Explore how modern engineering and eco-conscious design are shaping India’s real estate future with sustainable innovation.",
+    content:
+      "Full content of the blog goes here. You can replace this with the actual blog content from API.",
     imageUrl:
       "https://placehold.co/800x600/0d1117/94a3b8?text=Sustainable+Architecture",
     category: "Design",
@@ -19,6 +20,7 @@ const mockBlogPosts = [
     title: "How Technology is Revolutionizing Real Estate Development",
     summary:
       "From AI to smart home systems — discover how cutting-edge tech is redefining living experiences across India.",
+    content: "Full content of the blog goes here...",
     imageUrl:
       "https://placehold.co/800x600/111827/94a3b8?text=Tech+in+Real+Estate",
     category: "Innovation",
@@ -30,6 +32,7 @@ const mockBlogPosts = [
     title: "Why Location Still Reigns Supreme in Property Investment",
     summary:
       "In an age of virtual tours and digital transactions, location remains the cornerstone of real estate success.",
+    content: "Full content of the blog goes here...",
     imageUrl:
       "https://placehold.co/800x600/0f172a/94a3b8?text=Prime+Locations",
     category: "Investment",
@@ -41,6 +44,7 @@ const mockBlogPosts = [
     title: "Luxury Living: Redefining Comfort and Aesthetics",
     summary:
       "Take a closer look at how Kronus Infratech is transforming luxury housing through architecture, detail, and experience.",
+    content: "Full content of the blog goes here...",
     imageUrl:
       "https://placehold.co/800x600/1e293b/94a3b8?text=Luxury+Living",
     category: "Lifestyle",
@@ -52,6 +56,7 @@ const mockBlogPosts = [
     title: "Top Real Estate Investment Trends to Watch in 2026",
     summary:
       "Stay ahead of the curve with insights into the top emerging investment and infrastructure trends for the coming year.",
+    content: "Full content of the blog goes here...",
     imageUrl:
       "https://placehold.co/800x600/0d1117/94a3b8?text=Investment+Trends",
     category: "Market",
@@ -63,6 +68,7 @@ const mockBlogPosts = [
     title: "Smart Cities: The Next Chapter in India’s Growth Story",
     summary:
       "A deep dive into how smart urban planning is revolutionizing the way we live, work, and connect.",
+    content: "Full content of the blog goes here...",
     imageUrl:
       "https://placehold.co/800x600/0f172a/94a3b8?text=Smart+Cities",
     category: "Infrastructure",
@@ -72,24 +78,38 @@ const mockBlogPosts = [
 ];
 
 const Blog = () => {
-  return (
-    <section className="pt-40 pb-20 bg-black text-gray-300 min-h-screen relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-linear-to-b from-zinc-950 via-black to-zinc-900"></div>
-      <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lime-400/10 blur-[180px] rounded-full"></div>
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
-      {/* Content */}
+  // Lock scroll when modal is open
+  useEffect(() => {
+    if (selectedBlog) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedBlog]);
+
+  return (
+    <section className="relative pt-40 pb-20 bg-white text-gray-900 overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-20 left-1/3 w-[400px] h-[400px] bg-lime-200/20 blur-[200px] rounded-full animate-pulse-slow"></div>
+      <div className="absolute top-60 right-1/4 w-[500px] h-[500px] bg-lime-100/10 blur-[250px] rounded-full animate-pulse-slow"></div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold text-lime-400 mb-4 uppercase tracking-tight">
+          <h1 className="text-5xl font-extrabold text-amber-600 mb-4 uppercase tracking-tight animate-fade-in-down">
             Kronus Insights
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Stay updated with market trends, architectural innovation, and
-            expert insights from Kronus Infratech.
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed animate-fade-in-up">
+            Stay updated with market trends, architectural innovation, and expert
+            insights from Kronus Infratech.
           </p>
-          <div className="mt-6 h-0.5 bg-linear-to-r from-transparent via-lime-400 to-transparent w-64 mx-auto rounded-full"></div>
+          <div className="mt-6 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent w-64 mx-auto rounded-full animate-pulse"></div>
         </div>
 
         {/* Blog Grid */}
@@ -97,40 +117,22 @@ const Blog = () => {
           {mockBlogPosts.map((post) => (
             <div
               key={post.id}
-              className="group relative bg-gray-900/50 backdrop-blur-md border border-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-lime-400"
+              className="bg-gray-50 border border-gray-200 rounded-2xl shadow-lg hover:-translate-y-2 hover:scale-105 transition-all duration-500 cursor-pointer overflow-hidden"
+              onClick={() => setSelectedBlog(post)}
             >
-              {/* Image */}
               <div className="h-56 overflow-hidden">
                 <img
                   src={post.imageUrl}
                   alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      "https://placehold.co/800x600/1f2937/f3f4f6?text=Blog+Image";
-                  }}
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                 />
               </div>
-
-              {/* Content */}
               <div className="p-6">
-                {/* Category */}
-                <span className="inline-block bg-lime-400/10 text-lime-400 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                <span className="inline-block bg-lime-100 text-lime-600 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
                   {post.category}
                 </span>
-
-                {/* Title */}
-                <h2 className="text-xl font-bold text-white mb-3 group-hover:text-lime-400 transition">
-                  {post.title}
-                </h2>
-
-                {/* Summary */}
-                <p className="text-gray-400 text-sm mb-5 line-clamp-3">
-                  {post.summary}
-                </p>
-
-                {/* Metadata */}
+                <h2 className="text-xl font-bold text-gray-900 mb-3">{post.title}</h2>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{post.summary}</p>
                 <div className="flex items-center text-gray-500 text-xs space-x-4 mb-4">
                   <div className="flex items-center">
                     <Calendar size={14} className="mr-1" />
@@ -141,30 +143,37 @@ const Blog = () => {
                     <span>{post.readTime}</span>
                   </div>
                 </div>
-
-                {/* Read More Link */}
-                <a
-                  href="#"
-                  className="flex items-center text-lime-400 font-semibold text-sm hover:text-white transition group"
-                >
+                <div className="flex items-center text-lime-600 font-semibold text-sm">
                   Read Full Article
-                  <ArrowRight
-                    size={16}
-                    className="ml-2 transform transition group-hover:translate-x-1"
-                  />
-                </a>
+                  <ArrowRight size={16} className="ml-2" />
+                </div>
               </div>
             </div>
           ))}
         </div>
-
-        {/* Load More */}
-        <div className="flex justify-center mt-16">
-          <button className="py-3 px-8 text-sm font-semibold text-white bg-lime-500/20 border border-lime-400/30 rounded-lg shadow-md hover:bg-lime-400 hover:text-black transition-all duration-300">
-            Load More Articles
-          </button>
-        </div>
       </div>
+
+      {/* Fullscreen Modal */}
+      {selectedBlog && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6 animate-fade-in">
+          <div className="relative bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl p-10 flex flex-col">
+            <button
+              className="absolute top-6 right-6 text-gray-600 hover:text-gray-900"
+              onClick={() => setSelectedBlog(null)}
+            >
+              <X size={28} />
+            </button>
+            <img
+              src={selectedBlog.imageUrl}
+              alt={selectedBlog.title}
+              className="w-full h-64 object-cover rounded-2xl mb-6 flex-shrink-0"
+            />
+            <h2 className="text-3xl font-bold text-lime-600 mb-4">{selectedBlog.title}</h2>
+            <p className="text-gray-700 mb-6">{selectedBlog.content}</p>
+          </div>
+        </div>
+      )}
+
     </section>
   );
 };
